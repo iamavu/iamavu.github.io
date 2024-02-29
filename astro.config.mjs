@@ -11,7 +11,7 @@ import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs"
 import svelte from "@astrojs/svelte"
 
 const oklchToHex = (str) => {
-  const DEFAULT_HUE = 250
+  const DEFAULT_HUE = 330
   const regex = /-?\d+(\.\d+)?/g
   const matches = str.string.match(regex)
   const lch = [matches[0], matches[1], DEFAULT_HUE]
