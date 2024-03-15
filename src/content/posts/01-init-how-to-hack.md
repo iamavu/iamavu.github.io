@@ -2,9 +2,9 @@
 title: Init How to Hack
 published: 2020-09-01
 description: Learn Hacking the Hacker Way
-image: 'public/01-init-how-to-hack/is-this-hacking.png'
+image: '/public/01-init-how-to-hack/is-this-hacking.png'
 tags: [Guide, Fundamentals]
-category: Guides
+category: 'Guides'
 draft: false
 ---
 
