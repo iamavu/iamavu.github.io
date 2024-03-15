@@ -2,7 +2,7 @@
 title: Weekly Wanderings
 published: 2024-02-29
 description: 'What She Wanders About Every Week (Almost)'
-image: '/public/00-Weekly-Wanderings/banner.jpg'
+image: '/00-Weekly-Wanderings/banner.jpg'
 tags: [Weekly]
 category: 'Weekly'
 draft: false 

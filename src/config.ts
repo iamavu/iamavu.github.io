@@ -45,6 +45,7 @@ export const profileConfig: ProfileConfig = {
       icon: 'fa6-brands:github',
       url: 'https://github.com/iamavu',
     },
+    
   ],
 }
 
