@@ -10,6 +10,9 @@ draft: false
 
 ## what she explored this week
 
+### week 0x03
+- completed basic static analysis from PMA book and all of it's labs
+
 ### week 0x02
 - Itsy bitsy of HTB CTF, couldn't play much
 - PMA book as usual
