@@ -10,6 +10,11 @@ draft: false
 
 ## what she explored this week
 
+### week 0x04
+- completed [begin.re](https://begin.re) except the minesweeper challenge
+- did 7 levels of pwn.college asm crash course
+- solved 5 challenges from picoCTF in reversing section
+
 ### week 0x03
 - completed basic static analysis from PMA book and all of it's labs
 
