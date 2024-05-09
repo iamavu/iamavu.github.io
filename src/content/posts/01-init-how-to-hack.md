@@ -90,7 +90,7 @@ let’s have a look at what you might need to get started.
 everything is connected, so you must know how things work and how data is being transferred from one place to another, what is ip and mac, and what is that and this. it will show you a new perspective to look at the world and the internet. you can pick up any good resource love, i found professor messer’s network+ to be a good start, you don’t have to give the exam if you don’t want to but learn and always keep on learning. some people did find it too long or over the top for learning security, so i have linked one more small youtube playlist which will work decently good.
 
 link: [network+](https://www.professormesser.com/network-plus/n10-007/n10-007-training-course/)
-& link: [playlist](https://www.youtube.com/watch?v=bj-yfakjllc&list=plifyrwby_4brlmkfp1knza6rzbrhtxmxi)
+& link: [playlist](https://www.youtube.com/watch?v=bj-Yfakjllc&list=PLIFyRwBY_4bRLmKfP1KnZA6rZbRHtxmXi)
 
 ## linux:
 
