@@ -10,6 +10,10 @@ draft: false
 
 ## what she explored this week
 
+### week 0x05
+- did 10 challs of pwn.college of assembly crash course
+- did 3 chapters of C book
+
 ### week 0x04
 - completed [begin.re](https://begin.re) except the minesweeper challenge
 - did 7 levels of pwn.college asm crash course
