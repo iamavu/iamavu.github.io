@@ -11,6 +11,9 @@ draft: false
 ## what she explored this week
 
 ### week 0x05
+- did few challs of pwn.college, stuck on the shellcoding part
+
+### week 0x05
 - did 10 challs of pwn.college of assembly crash course
 - did 3 chapters of C book
 
