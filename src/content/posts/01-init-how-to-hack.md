@@ -2,7 +2,10 @@
 title: Init How to Hack
 published: 2020-09-01
 description: Learn Hacking the Hacker Way
+<<<<<<< HEAD
+=======
 image: '/01-init-how-to-hack/is-this-hacking.png'
+>>>>>>> 285ac3004502310c25bfb6ef0647f6eb1710c9ee
 tags: [Guide, Fundamentals]
 category: 'Guides'
 draft: false
@@ -10,7 +13,7 @@ draft: false
 
 ## #init how to hack
 
-<!-- ![is-this-hacking](public/01-init-how-to-hack/is-this-hacking.png) -->
+![is-this-hacking](public/01-init-how-to-hack/is-this-hacking.png)
 
 We all saw this, black hoodie, green text on the screen, and what not and after a second the person says *“i’m in”*.
 Well, hold your horses and your computers, that is not actual hacking.
