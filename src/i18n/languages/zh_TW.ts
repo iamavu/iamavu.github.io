@@ -5,6 +5,7 @@ export const zh_TW: Translation = {
   [Key.home]: '首頁',
   [Key.about]: '關於',
   [Key.archive]: '彙整',
+  [Key.search]: '搜尋',
 
   [Key.tags]: '標籤',
   [Key.categories]: '分類',
@@ -24,6 +25,10 @@ export const zh_TW: Translation = {
   [Key.postsCount]: '篇文章',
 
   [Key.themeColor]: '主題色',
+
+  [Key.lightMode]: '亮色',
+  [Key.darkMode]: '暗色',
+  [Key.systemMode]: '跟隨系統',
 
   [Key.more]: '更多',
 

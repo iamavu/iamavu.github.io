@@ -5,6 +5,7 @@ export const zh_CN: Translation = {
   [Key.home]: '主页',
   [Key.about]: '关于',
   [Key.archive]: '归档',
+  [Key.search]: '搜索',
 
   [Key.tags]: '标签',
   [Key.categories]: '分类',
@@ -24,6 +25,10 @@ export const zh_CN: Translation = {
   [Key.postsCount]: '篇文章',
 
   [Key.themeColor]: '主题色',
+
+  [Key.lightMode]: '亮色',
+  [Key.darkMode]: '暗色',
+  [Key.systemMode]: '跟随系统',
 
   [Key.more]: '更多',
 
