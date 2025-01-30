@@ -10,6 +10,10 @@ draft: false
 
 ## what she explored this week
 
+### week 0x06
+- started back with c from beej's guide
+- did picoCTF rev chall - WinAntiDbg0x100
+
 ### week 0x05
 - did few challs of pwn.college, stuck on the shellcoding part
 
@@ -26,11 +30,11 @@ draft: false
 - completed basic static analysis from PMA book and all of it's labs
 
 ### week 0x02
-- Itsy bitsy of HTB CTF, couldn't play much
+- itsy bitsy of HTB CTF, couldn't play much
 - PMA book as usual
-- Brought back my [gitbook](https://iamavu.gitbook.io) to life 
+- brought back my [gitbook](https://iamavu.gitbook.io) to life 
 
 ### week 0x01
 - pwn.college - program misuse 10 levels
-- Practical malware analysis book - 50 pages - some windows API calls, understanding and identifying what makes a malware, a malware
-- Developing with astro theme and some tailwind CSS
+- practical malware analysis book - 50 pages - some windows API calls, understanding and identifying what makes a malware, a malware
+- developing with astro theme and some tailwind CSS
