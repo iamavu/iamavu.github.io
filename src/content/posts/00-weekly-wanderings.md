@@ -10,6 +10,10 @@ draft: false
 
 ## what she explored this week
 
+### week 0x07
+- ELF files and information about them
+- completed GDB course from OST2
+
 ### week 0x06
 - started back with c from beej's guide
 - did picoCTF rev chall - WinAntiDbg0x100
