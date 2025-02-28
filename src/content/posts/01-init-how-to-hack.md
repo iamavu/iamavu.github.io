@@ -10,8 +10,6 @@ draft: false
 
 ## #init how to hack
 
-<!-- ![is-this-hacking](public/01-init-how-to-hack/is-this-hacking.png) -->
-
 We all saw this, black hoodie, green text on the screen, and what not and after a second the person says *“i’m in”*.
 Well, hold your horses and your computers, that is not actual hacking.
 well in a sense, you could wear a black hoodie and have a black and green terminal and sit in dark and wear a mask and stare at your screen, but you might hurt your eyes and your mum might yell at you.
