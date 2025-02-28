@@ -10,6 +10,10 @@ draft: false
 
 ## what she explored this week
 
+### week 0x08
+- completed 4 challs from rev @ pwn.college
+- tried writing C code to XOR a file but failed
+
 ### week 0x07
 - ELF files and information about them
 - completed GDB course from OST2
