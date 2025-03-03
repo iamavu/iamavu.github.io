@@ -8,6 +8,26 @@ category: 'PMA-Notes'
 draft: false 
 ---
 
+## Table of Contents
+- [Static Analysis](#static-analysis)
+  - [Antivirus Scanning](#antivirus-scanning)
+  - [Hashing : Fingerprinting a malware](#hashing--fingerprinting-a-malware)
+  - [Finding Strings](#finding-strings)
+  - [Packed and Obfuscated Malware](#packed-and-obfuscated-malware)
+  - [Portable Executable File Format](#portable-executable-file-format)
+  - [Linked Library and Functions](#linked-library-and-functions)
+  - [PE File Headers and Sections](#pe-file-headers-and-sections)
+  - [Some Tips and Trivia](#some-tips-and-trivia)
+- [Malware Analysis in Virtual Machines](#malware-analysis-in-virtual-machines)
+  - [Introduction](#introduction)
+  - [Structure of Virtual Machine](#structure-of-virtual-machine)
+- [Basic Dynamic Analysis](#basic-dynamic-analysis)
+  - [Introduction](#introduction-1)
+  - [Monitoring With Process Monitor](#monitoring-with-process-monitor)
+  - [Viewing Process With Process Explorer](#viewing-process-with-process-explorer)
+  - [Comparing Registry Snapshots with RegShot](#comparing-registry-snapshots-with-regshot)
+  - [Faking a Network](#faking-a-network)
+
 # Static Analysis
 
 ## Antivirus Scanning
