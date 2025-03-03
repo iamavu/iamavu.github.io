@@ -3,8 +3,8 @@ title: PMA - 0x02 - Basic Techniques
 published: 2025-02-28
 description: 'Notes from Practical Malware Analysis Section 0x02'
 image: '/04-PMA-Basic-Techniques/banner.png'
-tags: [PMA, Malware, Malware Analysis]
-category: 'PMA'
+tags: [PMA, Malware, Malware Analysis, Notes]
+category: 'PMA-Notes'
 draft: false 
 ---
 
