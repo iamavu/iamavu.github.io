@@ -28,6 +28,8 @@ draft: false
   - [Comparing Registry Snapshots with RegShot](#comparing-registry-snapshots-with-regshot)
   - [Faking a Network](#faking-a-network)
 
+---
+
 # Static Analysis
 
 ## Antivirus Scanning
