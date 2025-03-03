@@ -110,6 +110,8 @@ draft: false
 - All Delphi programs use compile time of June 19, 1992
 - Virtual size (space allocated for section during loading) and raw data (how big section is on disk) should be equal (small differences are fine), if they aren’t that means it’s a packed program
 
+---
+
 # Malware Analysis in Virtual Machines
 
 ## Introduction
@@ -131,6 +133,8 @@ draft: false
 - Taking snapshots is important before you analyze any malware so you can return back to original state once you are done with your work
 
 ![snapshot](public/04-PMA-Basic-Techniques/snapshot.png)
+
+---
 
 # Basic Dynamic Analysis
 
