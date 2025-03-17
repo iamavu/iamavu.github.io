@@ -10,6 +10,10 @@ draft: false
 
 ## what she explored this week
 
+### week 0x09
+- working on x86-64 course from OST2
+
+
 ### week 0x08
 - completed 4 challs from rev @ pwn.college
 - tried writing C code to XOR a file but failed
