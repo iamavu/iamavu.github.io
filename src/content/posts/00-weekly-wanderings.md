@@ -10,6 +10,11 @@ draft: false
 
 ## what she explored this week
 
+### week 0x10
+
+- started orange belt of pwn.college
+- completed 25 challenges from the same
+
 ### week 0x09
 - working on x86-64 course from OST2
 
