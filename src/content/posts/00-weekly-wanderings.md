@@ -12,7 +12,7 @@ draft: false
 
 ### week 0x10
 
-- started orange belt of pwn.college
+- started orange belt of [pwn.college](https://pwn.college)
 - completed 25 challenges from the same
 
 ### week 0x09
