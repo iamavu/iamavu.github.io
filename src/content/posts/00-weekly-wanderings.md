@@ -10,6 +10,11 @@ draft: false
 
 ## what she explored this week
 
+### week 0x11
+
+- completed C course
+- wrote the blog post for making my first crackme -- [medusa](https://iamavu.com/posts/05-making-medusa-my-first-crackme-part-0x01/)
+
 ### week 0x10
 
 - started orange belt of [pwn.college](https://pwn.college)
