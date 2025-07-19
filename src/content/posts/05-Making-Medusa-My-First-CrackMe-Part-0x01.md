@@ -1,5 +1,5 @@
 ---
-title: Making Medusa : My First CrackMe - Part 0x01
+title: "Making Medusa : My First CrackMe - Part 0x01"
 published: 2025-07-19
 description: 'Making my first crackme challenge in C'
 image: '/05-Making-Medusa-My-First-CrackMe-Part-0x01/banner.png'
@@ -10,12 +10,12 @@ draft: false
 
 ## Table Of Contents
 
-- [main.c](#mainc)
-- [pseudo-C](#pseudo-c)
-- [disassembly](#disassembly)
-- [layering](#layering)
-- [problemo](#problemo)
-- [what-we-learnt](#what-we-learnt)
+- [MAIN.C](#mainc)
+- [PSEUDO-C](#pseudo-c)
+- [DISASSEMBLY](#disassembly)
+- [LAYERING](#layering)
+- [PROBLEMO](#problemo)
+- [WHAT WE LEARNT](#what-we-learnt)
 
 I had just started learning C and after completing few basics, I was looking for my first project to make. After thinking around, I landed on making a CrackMe challenge in C.
 Goal would be to start small, compile the binary, view the disassembly, view the pseudo-C code in IDA-Free and co-relate everything and move to adding more complexities.
@@ -23,8 +23,8 @@ Goal would be to start small, compile the binary, view the disassembly, view the
 GGs, that sounds fun!
 Lets code, shall we?
 
-### main.c
-First I wrote a simple `main.c` program---
+### MAIN.C
+First I wrote a simple `main.c` program--
 ```c
 #include  <stdint.h>
 #include  <sys/mman.h>
@@ -47,7 +47,7 @@ int  main()
 ```
 Lets compile the program (`gcc -m32 -fno-stack-protector -z execstack -no-pie -fno-pic main.c -o main`) and view its pseudo-C code
 
-### pseudo-C
+### PSEUDO-C
 ```c
 int __cdecl main(int argc, const char **argv, const char **envp)
 {
@@ -60,7 +60,7 @@ int __cdecl main(int argc, const char **argv, const char **envp)
 }
 ```
 
-### disassembly
+### DISASSEMBLY
 and now its disassembly
 ```asm
 ; int __cdecl main(int argc, const char **argv, const char **envp)
@@ -128,8 +128,8 @@ main endp
 _text ends
 ```
 
-### layering
-Now that we have seen code in all three forms, let's add some layers. I wrote another file `validate.c`---
+### LAYERING
+Now that we have seen code in all three forms, let's add some layers. I wrote another file `validate.c`--
 ```c
 #include  <stdio.h>
 #include  <string.h>
@@ -171,7 +171,7 @@ int  validate(const  char  *input)
 I compiled it again and this time we extract just the raw instruction bytes of validate part of the code `objdump -M intel -d validate | awk '/<validate>:/,/^$/' | \
 awk '/^[[:space:]]*[0-9a-f]+:/ {for(i=2;i<=10;i++) if($i ~ /^[0-9a-f][0-9a-f]$/) printf "0x%s, ", $i} END {print ""}'` (thanks chatGPT).
 
-which now we will be XORing with a key (`0x1337`) using python---
+which now we will be XORing with a key (`0x1337`) using python--
 ```py
 def  xor_encrypt(buf:  bytearray,  key:  int)  ->  None:
 	key_bytes =  [key &  0xFF,  (key >>  8)  &  0xFF]
@@ -197,7 +197,7 @@ xor_encrypt(data,  0x1337)
 print("Encrypted:",  ', '.join(f'0x{b:02x}'  for b in data))
 ```
 
-Now we update our C code to look something like this---
+Now we update our C code to look something like this--
 ```c
 #include  <stdint.h>
 #include  <sys/mman.h>
@@ -242,14 +242,14 @@ void  xor_decrypt(uint8_t  *buf,  size_t  len,  uint16_t  key)
 }
 ```
 
-### problemo
-But there comes a problem, no matter what I entered, wrong flag or right flag, It would always give me `"YOU GOT STONED BY THE MEDUSA! D:"`
+### PROBLEMO
+But there comes a problem, no matter what I entered, wrong flag or right flag, It would always give me `"YOU GOT STONED BY THE MEDUSA!"`
 What went wrong, after pondering and tinkering I realised that the flag `pwning-since-1337` would be stored in `.rodata` and there would be no way to access it in `validate`'s function.
 
 We need to write self contained function which has the `pwning-since-1337` itself.
 So we just make an local array, easy-peasy-lemon-squeezy!
 
-Here is our updated `validate-self-contained.c`---
+Here is our updated `validate-self-contained.c`--
 ```c
 #include  <stdio.h>
 #include  <string.h>
@@ -299,13 +299,13 @@ while  (1)
 ```
 Compile. Extract. XOR. Same yadda yadda process
 and lets hit run!
-![working-image](public/05-Making-Medusa-My-First-CrackMe/pwning.png)
+![working-image](public/05-Making-Medusa-My-First-CrackMe-Part-0x01/pwning.png)
 yipeee, it is working!
 
 We now have a simple working [CrackMe](https://github.com/iamavu/Medusa).
 
 
-### what we learnt
+### WHAT WE LEARNT
 - we can create a executable region in memory from which we can execute code
 - how to alternatively use key's both bytes to XOR 
 - the data or our flag was stored in `.rodata` hence we needed to make it local
