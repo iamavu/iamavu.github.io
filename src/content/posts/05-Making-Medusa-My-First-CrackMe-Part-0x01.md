@@ -45,7 +45,24 @@ int  main()
 	return  result; // return the result which should be 66
 }
 ```
-Lets compile the program (`gcc -m32 -fno-stack-protector -z execstack -no-pie -fno-pic main.c -o main`) and view its pseudo-C code
+Lets compile the program and view its pseudo-C code
+```sh
+gcc -m32 -fno-stack-protector -z execstack -no-pie -fno-pic main.c -o main
+```
+- **-m32** : Produces a 32-bit binary
+
+- **-fno-stack-protector** : Disables canary-based stack protection
+
+- **-z execstack** : Marks the stack as executable
+
+- **-no-pie** : Generates a binary with a fixed base address instead of randomized addresses (ASLR for PIE)
+
+- **-fno-pic** : Disables generation of position-independent code. Relevant mostly for shared libraries or PIEs.
+
+- **main.c** : Source file to compile.
+
+- **-o main** : Names the output binary `main`.
+
 
 ### PSEUDO-C
 ```c
