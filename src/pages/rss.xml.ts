@@ -20,8 +20,8 @@ export async function GET(context: APIContext) {
 
 	return rss({
 		title: siteConfig.title,
-		description: siteConfig.subtitle || "No description",
-		site: context.site ?? "https://fuwari.vercel.app",
+		description: siteConfig.subtitle || "Avantika's Wanderings",
+		site: context.site ?? "https://iamavu.com",
 		items: blog.map((post) => {
 			const content =
 				typeof post.body === "string" ? post.body : String(post.body || "");
