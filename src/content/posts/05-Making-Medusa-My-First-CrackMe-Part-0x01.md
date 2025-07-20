@@ -185,8 +185,11 @@ int  validate(const  char  *input)
 	}
 }
 ```
-I compiled it again and this time we extract just the raw instruction bytes of validate part of the code `objdump -M intel -d validate | awk '/<validate>:/,/^$/' | \
-awk '/^[[:space:]]*[0-9a-f]+:/ {for(i=2;i<=10;i++) if($i ~ /^[0-9a-f][0-9a-f]$/) printf "0x%s, ", $i} END {print ""}'` (thanks chatGPT).
+I compiled it again and this time we extract just the raw instruction bytes of validate part of the code 
+```sh
+objdump -M intel -d validate | awk '/<validate>:/,/^$/' | awk '/^[[:space:]]*[0-9a-f]+:/ {for(i=2;i<=10;i++) if($i ~ /^[0-9a-f][0-9a-f]$/) printf "0x%s, ", $i} END {print ""}'
+```
+(thanks chatGPT).
 
 which now we will be XORing with a key (`0x1337`) using python--
 ```py
