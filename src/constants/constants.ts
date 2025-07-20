@@ -15,3 +15,6 @@ export const MAIN_PANEL_OVERLAPS_BANNER_HEIGHT = 3.5;
 
 // Page width: rem
 export const PAGE_WIDTH = 75;
+
+//custom by @iamavu
+export const UNCATEGORIZED = "uncategorized";
