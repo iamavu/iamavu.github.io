@@ -27,6 +27,8 @@ bun.lockb
 yarn.lock
 
 #cusomt fuwari update
+.github
+.vscode/
 CONTRIBUTING.md
 docs/README.es.md
 docs/README.ja.md
