@@ -55,6 +55,14 @@
           "title": "draft",
           "name": "draft",
           "type": "boolean"
+<<<<<<< HEAD
+=======
+        },
+        {
+          "title": "language",
+          "name": "language",
+          "type": "string"
+>>>>>>> upstream/main
         }
       ]
     }
