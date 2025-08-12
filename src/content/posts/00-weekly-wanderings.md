@@ -10,6 +10,9 @@ draft: false
 
 ## what she explored this week
 
+### week 0x12
+- completed [hackaday's ghidra course](https://hackaday.io/course/172292-introduction-to-reverse-engineering-with-ghidra)
+
 ### week 0x11
 
 - completed C course
@@ -22,7 +25,6 @@ draft: false
 
 ### week 0x09
 - working on x86-64 course from OST2
-
 
 ### week 0x08
 - completed 4 challs from rev @ pwn.college
