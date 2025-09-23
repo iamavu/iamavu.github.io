@@ -5,7 +5,7 @@ description: "Beginner's Introduction to x86 Assembly"
 image: '/06-x86-Assembly-101/banner.png'
 tags: [Reversing, Assembly, x86, Guides, Fundamentals]
 category: 'Guides'
-draft: false
+draft: true
 ---
 
 # x86 Assembly
@@ -182,10 +182,10 @@ x86 instructions are **variable-length** (1–15 bytes). An instruction consists
 
 ### Arithmetic Operations
 
-> Some notations:
-> r/mX = register or memory operand (X bits)
-> immX = immediate value (X bits)
-> rX = register operand (X bits)
+Some notations:
+r/mX = register or memory operand (X bits)
+immX = immediate value (X bits)
+rX = register operand (X bits)
 
 **ADD**
 
