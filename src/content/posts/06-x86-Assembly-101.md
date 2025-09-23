@@ -12,346 +12,381 @@ draft: false
 
 ## Endianness
 
-Endianness is how you store the value for e.g. - `0x12345678` into RAM.
+Endianness describes how a multi-byte integer like `0x12345678` is laid out **in memory** (lowest address first).
 
-Little Endian - LSB(Least Significant Byte) or Lowest end would be stored at lowest address, i.e. the value would look like this — `0x78 0x56 0x34 0x12`
+* **Little-endian** (x86): least-significant byte at the lowest address
+  memory bytes: `78 56 34 12`
+* **Big-endian**: most-significant byte at the lowest address
+  memory bytes: `12 34 56 78`
 
-Big Endian - MSB(Most Significant Byte) or  Big end would be stored at the lowest address i.e, the value would look like this — `0x12 0x34 0x56 0x78`
+**Important clarifications**
 
-Endianness only applies to memory storage of values and not to registers (it will be always in big endian) and only to bytes not to bits
+* Endianness is about **byte order in memory**. Registers hold abstract values; when you move part of a register to memory, the stored bytes follow the machine’s endianness.
+* Endianness concerns **bytes**, not the order of **bits** within a byte.
+
+---
 
 ## Sizes
 
-Data in 32 bit assembly is bits, bytes, words, and dwords as follows—
+In 32-bit x86, common integer sizes are:
 
-- Bit can be 0 or 1
-- Byte are 8 bits put together ranging between  0 and 255; signed (two’s-complement) `-128..127`
-- Word is two bytes put together with max value of 65535; signed `-32768..32767`
-- Dword is two words(D stands for double), max value being  4294967295.;signed `-2,147,483,648..2,147,483,64`
+* **bit**: `0` or `1`
+* **byte** (8 bits): unsigned `0..255`, signed (two’s-complement) `−128..127`
+* **word** (16 bits): unsigned `0..65535`, signed `−32768..32767`
+* **dword** / **doubleword** (32 bits): unsigned `0..4294967295`, signed `−2147483648..2147483647`
 
 **Notes / tips**
 
-- “Word” on x86 is **always 16 bits** (even in 32/64-bit modes). The 32-bit term is “doubleword/dword”; the 64-bit term is “quadword/qword”.
-- Alignment matters: many ABIs prefer 4-byte stack alignment on x86 (and some libraries/SSE code expect 16-byte alignment at call sites).
-- Sign vs zero extension appear often: `MOVSX`/`MOVZX`, `CBW/CWDE/CDQE`, `CWD/CDQ/CQO` (see below).
+* On x86, a **word is always 16 bits** (even in 32/64-bit modes). 32-bit = **doubleword**; 64-bit = **quadword**.
+* Alignment matters: many 32-bit ABIs prefer **4-byte** stack alignment; some libraries/SSE code assume **16-byte** alignment at call sites.
+* Sign/zero-extension show up frequently:
+
+  * `MOVSX`/`MOVZX` (load smaller → larger with sign/zero fill)
+  * `CBW`/`CWDE` (sign-extend AL→AX, AX→EAX)
+  * `CWD`/`CDQ` (sign-extend AX→DX\:AX, EAX→EDX\:EAX)
+
+---
 
 ## Registers
 
-A register is small storage space  which are much faster to access usual ones.
+A **register** is a small, fast storage cell inside the CPU.
 
-### General Purpose Register (GPR)
+### General-Purpose Registers (GPRs)
 
-There are 8 of them as follows
+The classic 32-bit set:
 
-- EAX → Extended Accumulator Register
-- EBX → Extended Base Register
-- ECX → Extended Counter Register
-- EDX → Extended Data Register
-- ESI → Extended Source Index
-- EDI → Extended Destination Index
-- EBP → Extended Base Pointer
-- ESP → Extended Stack Pointer
+* `EAX` (accumulator) `EBX` (base) `ECX` (count) `EDX` (data)
+* `ESI` (source index) `EDI` (dest index)
+* `EBP` (frame/base pointer) `ESP` (stack pointer)
 
-All the GPR are 32 bit in size but a subset of them can be referred as follows—
+Sub-registers:
 
-| 32 bits | 16 bits | 8 bit |
-| --- | --- | --- |
-| EAX | AX | AH/AL |
-| EBX | BX | BH/BL |
-| ECX | CX | CH/CL |
-| EDX | DX | DH/DL |
-| ESI | SI |  |
-| EDI | DI |  |
-| EBP | BP |  |
-| ESP | SP |  |
+| 32 bits | 16 bits | 8 bits  |
+| ------- | ------- | ------- |
+| EAX     | AX      | AH / AL |
+| EBX     | BX      | BH / BL |
+| ECX     | CX      | CH / CL |
+| EDX     | DX      | DH / DL |
+| ESI     | SI      | —       |
+| EDI     | DI      | —       |
+| EBP     | BP      | —       |
+| ESP     | SP      | —       |
 
-AX to SP are the 16 bit register used to reference the 16 least significant bits in their equivalent 32 bit registers.
+* `AX..SP` are the **low 16** bits of the corresponding `E*` register.
+* `AH/AL` access the high/low 8 bits of `AX` (similar for `BH/BL`, etc).
 
-The 8 bit register reference the higher and lower eight bits of the 16 bit registers
+Other architectural registers:
 
-**EIP** – Extended Instruction Pointer is a **register** which points to next instruction to be executed.
+* **`EIP`** – instruction pointer (address of next instruction)
+* **`EFLAGS`** – status/control flags (see below)
+* Control registers **`CR0..CR4`**, debug registers **`DR0..DR7`**, etc.
 
 **Notes / tips**
 
-- Partial registers alias: writing `AL` only changes the low 8 bits of `AX/EAX`; writing `AH` touches bits 8–15; writing `AX` changes the low 16 of `EAX`.
-- On older µarchs, mixing partial and full register writes could cause stalls; zero-idioms like `XOR EAX,EAX` are preferred to clear.
-- There are other important architectural registers: **EFLAGS** (status), control registers **CR0–CR4**, debug registers **DR0–DR7**.
+* Partial register aliasing: writing `AL` changes only bits 7..0 of `EAX`; writing `AX` changes bits 15..0.
+* On older µarchs, mixing partial and full writes could cause stalls; use zero-idioms like `xor eax,eax` to clear efficiently.
 
 ### Segment Registers
 
-Segment Registers are used to make segmental distinctions in the binary, the hex value `0x90` can either be instruction or a data value. CPU knows which one it is because of segment registers.
+Visible segment registers: **`CS`, `DS`, `SS`, `ES`, `FS`, `GS`**.
 
-**Details**
+* In typical 32-bit **flat** protected mode (modern OSes), segment bases are set so that linear = virtual addresses; you rarely manipulate them.
+* **`CS`** is used for instruction fetch; **`DS`/`SS`** for most data/stack. You can override with prefixes (`FS:`, `GS:`, etc).
+* `FS`/`GS` are commonly used for thread-local data (e.g., TEB/PEB on Windows).
 
-- The visible segment registers are **CS, DS, SS, ES, FS, GS**.
-- In common 32-bit **flat** protected-mode (modern OSes), segment bases are set so that linear = virtual addresses, so you rarely manipulate segments directly. `FS`/`GS` are commonly used for TLS/TEB/PEB.
-- Instruction fetch uses **CS**, data loads typically use **DS/SS** (stack uses **SS**). You can override with segment override prefixes (`FS:`, etc).
+> The same byte value (e.g., `0x90`) can be “code” or “data” depending on **how** it’s accessed (instruction fetch via `CS:EIP` vs load/store via data segments), not because the byte itself carries a tag.
 
 ### Status Flag Registers
 
-Flags are tiny bit values either set (1) or not set (0). Flags are stored in special flag register.
+Key `EFLAGS` bits (set/cleared by many instructions):
 
-Some commonly used ones are
+* **ZF** (Zero Flag): result == 0
+* **SF** (Sign Flag): most-significant bit of result (interpreting sign)
+* **OF** (Overflow Flag): signed overflow on add/sub/arith
+* **CF** (Carry Flag): carry/borrow out for unsigned arith, last bit shifted/rotated out
+* Others: **PF** (parity), **AF** (aux carry), **DF** (direction), **TF** (trap), etc.
 
-- Z → zero flag, set when the result of last operation is zero
-- S → signed flag, set to determine if the value should be intercepted as signed or unsigned
-- O → overflow flag, set when the result of last operation switches the most significant bit from either F to 0 or 0 to F
-- C → carry flag, set when the result of the last operation changes the most significant bit
+---
 
 ## Segments and Offsets
 
-There are must have four segments in any program
+Typical **sections/segments** in a program image:
 
-- `.text` → stores program code
-- `.data` → stores global data
-- `.stack` → stores local variables, function arguments and much more
-- `.heap` → extendable memory segment which programs use as per their need
+* **`.text`** – code
+* **`.data`** – initialized globals
+* **`.bss`** – zero-initialized globals (often implicit)
+* **stack** – call frames, locals, return addresses
+* **heap** – dynamically allocated memory
+
+(Exact naming/layout varies by OS/toolchain; conceptually these regions exist in every process.)
 
 ### Stack
 
-The stack is the part of memory where a program stores a local variables and function arguments for later use. 
-It is LIFO (Last In First Out) data structure i.e. when something is added to stack, it is added at the top of stack and when something is removed from the stack, it is remove from the stack.
+A LIFO region used for call frames, locals, and temporaries.
 
-Stack grows backwards i.e. from highest memory address to lowest memory address.
+* Grows **downward** (toward lower addresses) on x86.
+* **`ESP`** points to the top (last pushed item is at `[ESP]`).
 
-ESP is stack pointer register that always points to the top of the stack and when something new is added at top of stack, ESP is *decremented*  because stack grows backwards
+**Mechanics**
+
+* `PUSH X`: store X at `ESP-4`, then `ESP := ESP-4`
+* `POP  R`: load from `[ESP]` into `R`, then `ESP := ESP+4`
 
 **Notes / tips**
 
-- `PUSH` stores at `ESP-4` then updates `ESP`; `POP` reads at `ESP` then increments `ESP`.
-- Many ABIs require stack alignment on call entry (Win32: 4-byte; some libraries/SSE code assume 16-byte).
-- Use stack for temporaries/spills; prefer registers for hot paths.
+* Many ABIs(Application Binary Interface) require stack alignment at call boundaries (Win32: 4-byte; some code assumes 16-byte).
+* Prefer registers in hot paths; use the stack for spills/temporaries.
 
 ### Stack Frames
 
-The EBP is the base pointer, every function has its own stack frame. The base is the beginning of the stack frame. When function is called it creates its own stack frame which is marked out by EBP
+A function’s frame is typically anchored by **`EBP`**.
 
-**Typical prologue/epilogue**
+**Prologue / Epilogue (typical)**
 
 ```asm
 push ebp
 mov  ebp, esp
 sub  esp, local_size
-; ...
-leave        ; mov esp, ebp / pop ebp
-ret  argsz   ; optional immediate cleans args (stdcall)
-
+; ... body ...
+leave          ; mov esp, ebp / pop ebp
+ret  argsz     ; optional immediate cleans args (stdcall)
 ```
 
 **Notes / tips**
 
-- Frame-pointer omission (FPO): compilers may use `EBP` as a GPR and address locals off `ESP`.
-- `ENTER`/`LEAVE` exist but compilers favor `push/mov/sub` + `leave`.
+* Compilers may omit the frame pointer (FPO) and address locals relative to `ESP`.
+* `ENTER`/`LEAVE` exist; `push/mov/sub` + `leave` is preferred.
 
 ### Heap
 
-Heap is memory space where process can allocate memory when it needs it.
+Process-wide dynamic memory managed by an **allocator**.
 
-Each process has one heap and it is shared among the different threads. Heap is a linked-list data structure i.e. each item only knows the position of the immediate items before and after it.
+* Real allocators use bins/arenas/freelists; not just a single linked list.
+* The **heap is per process**; all threads share it. Free only what you allocated; avoid use-after-free/data races.
 
-**Notes / tips**
-
-- Real allocators are more complex (bins, arenas, freelists). Windows uses the NT heap/Low-fragmentation heap; glibc uses ptmalloc; others: jemalloc, tcmalloc.
-- Heap is per **process**; threads share it. Use care with concurrency and free-after-use.
+---
 
 ## Instructions
 
-Intel instructions vary in size from one to fourteen bytes. The opcodes(short for operation code) is mandatory for them all and can be combined to created advanced instructions.
+x86 instructions are **variable-length** (1–15 bytes). An instruction consists of opcode + optional prefixes, ModR/M, SIB, displacement, and immediate.
 
-Instructions may have upto 3 operators. Instructions containing `[]` means at certain memory offset.
-Bytes are saved in reverse order, known as little endian representation i.e. most significant it of every byte is the most left bit
+* At most **two** explicit memory operands are **not** allowed for ALU ops: x86 generally forbids **mem-to-mem** arithmetic; use a register as one side.
+* Little-endian governs how multi-byte immediates/displacements are encoded and how memory operands are stored.
 
 ### NOP
 
-Stands for no-operation, does literally nothing, takes no registers, no values.
-Used for padding or aligning bytes or to delay time
+**No-operation**; occupies a cycle/byte slot, affects nothing.
 
-Is an alias mnemonic for `XCHG EAX, EAX` which just exchanges register with itself doing nothing.
+* Preferred encoding: `NOP` (`0x90`).
+* Historically can be expressed as `XCHG EAX,EAX`, but modern assemblers encode proper NOPs (and multi-byte NOPs for alignment).
 
 ### Arithmetic Operations
 
-**ADD  :**  
+> Some notations:
+> r/mX = register or memory operand (X bits)
+> immX = immediate value (X bits)
+> rX = register operand (X bits)
 
-add dest, src
+**ADD**
 
-Destination and source can be either register, a memory reference (anything surrounded by `[]` is address reference). The source can also be an immediate number. Note that both destination and source cannot be a memory a reference at the same time, but both however can be registers.
+```asm
+add dest, src   ; dest := dest + src
+```
 
-**SUB :**  
+* Sets `CF`, `OF`, `SF`, `ZF`, `AF`, `PF` as appropriate.
+* `dest` may be reg/mem; `src` may be reg/mem/imm (but not mem+mem).
 
-sub dest, src
+**SUB**
 
-Works similar to add instruction
+```asm
+sub dest, src   ; dest := dest - src
+```
 
-**DIV/IDIV :** 
+* Similar flags behavior to `ADD`.
 
-div divisor
+**DIV / IDIV** (unsigned / signed divide)
 
-The dividend is always eax and that is also were the result of the operation is stored. The rest value is stored in edx. 
+```asm
+; 32-bit:
+; dividend in EDX:EAX (hi:lo)
+div  r/m32      ; EAX := quotient, EDX := remainder
+idiv r/m32      ; signed; set up EDX:EAX with CDQ
+```
 
-IDIV is same as DIV but signed division.
+* Before `IDIV`, use `CDQ` to sign-extend `EAX` into `EDX`.
+* Division by zero or quotient overflow raises an exception.
 
-**MUL/IMUL :** 
+**MUL / IMUL** (unsigned / signed multiply)
 
-mul value
+Forms:
 
-mul dest, value, value
+* One-operand:
 
-mul, dest, value
+  ```asm
+  mul  r/m32         ; EDX:EAX := EAX * r/m32
+  imul r/m32         ; signed
+  ```
+* Two-operand:
 
-mul/imul (unsigned/signed) multiply either eax with a value or they multiply two values and put them in destination register or they multiply a register with a value.
+  ```asm
+  imul r32, r/m32    ; r32 := r32 * r/m32
+  ```
+* Three-operand:
 
-**LEA :**
-lea reg, [mem computes effective address; use as free add/shift (`lea eax, [ecx*4+edx+8]`).
+  ```asm
+  imul r32, r/m32, imm8/imm32  ; r32 := (r/m32) * imm
+  ```
+
+**LEA** (Load Effective Address)
+
+```asm
+lea reg, [base + index*scale + disp]
+```
+
+* Computes the address expression; **does not** touch memory; flags unaffected. Often used as a free add/shift: e.g., `lea eax, [ecx*4 + edx + 8]`.
 
 ### Bitwise Operations
 
-**AND :** and dest, src
+```asm
+and dest, src
+or  dest, src
+xor dest, src
+not dest        ; unary
+```
 
-**OR :** or dest, src
+* `AND/OR/XOR` set `ZF/SF` from the result and **clear `CF` and `OF`**. `NOT` affects no flags.
 
-**XOR :** xor dest, src
+**Shifts / Rotates**
 
-**NOT :** not eax
-
-In bitwise two pieces of data are being compared bit by bit and depending on the operation, the outcome is either a 0 or a 1.
-
-**Shifts / rotates**
-
-- `shl/sal`, `shr`, `sar` (arith right keeps sign), `rol`, `ror`, `rcl`, `rcr`
-- Count in `CL` or immediate (1). Shifts set `CF` to the last shifted-out bit.
+* `SHL`/`SAL` (logical/arithmetic left), `SHR` (logical right), `SAR` (arithmetic right), `ROL`, `ROR`, `RCL`, `RCR`
+* Count is `1`, imm8, or in `CL`. `CF` gets the last shifted-out bit; `OF` defined for count = 1 (`SHL/SAL/SHR/SAR`).
 
 ### Branching
 
-**J* :** j* address (*where * jmp type instruction)*
+Unconditional/conditional jumps change `EIP` based on flags.
 
-In assembly branching is made through the use of jumps and flags. A jump is just an instruction that under certain circumstances will point the EIP to another portion of code (much like `goto` in C).
-Flags are tiny one bit values which can be 1 or 0. Most instructions set one or more flags.
+* Set flags with `CMP dest, src` (`dest - src`) or `TEST` for bitwise checks.
+* Conditional jumps (selected set):
 
-**ADD and SUB** can set all the Z, S, O, C flags .
-
-**AND** always clears O and C flags but sets  Z and S according to results.
-
-Depending on flags set, a jump will either happen or not.
-
-A lot of times you will see an instruction called **CMP**  being used before jump. CMP is the ideal pre-branch instruction as it can set all status flags and is really fast.
-
-**CMP :** cmp dest, src
-
-But its not a compulsion for CMP to be used, XOR also occurs frequently
-
-### Data Moving
-
-**MOV :** mov dest, src
-
-**MOVSB :** movsb dest, src
-
-**MOVZX :** movzx dest, src
-
-MOV copies data from source to destination. Both source and destination can be register or register to memory but not memory to memory
-
-MOVSX copies data from source to destination while preserving the sign.
-
-MOVZX copies data from source to destination while filling upper bits in destination register with 0s
-
-### Loops
-
-loop example
-
-```asm
-mov ecx, 5 ; ecx, the extended counter register
-
-_proc:
-dec ecx    ; decrements ecx
-loop _proc ; loops back to _proc
-```
-
-rep example (similar to loop but specifically designed to handle strings
-
-```asm
-mov esi, str1
-mov edi, str2
-mov ecx, 10h
-rep cmps
-```
-
-String to be compared here are loaded in ESI and EDI and then comparison is performed for 16 bytes (10h), If at some point source and destination is not equal, a flag will be set and operation will be aborted.
+  * Unsigned: `JA/JNBE` (>, no carry/zero), `JB/JNAE` (<, carry), `JAE/JNB` (>=), `JBE/JNA` (<=)
+  * Signed: `JG/JNLE` ( > ), `JL/JNGE` ( < ), `JGE/JNL`, `JLE/JNG`
+  * Equality: `JE/JZ`, `JNE/JNZ`
+  * Others: `JC/JNC`, `JO/JNO`, `JS/JNS`, `JP/JPE`, `JNP/JPO`
 
 **Notes / tips**
 
-- `LOOP` is generally slower than `dec ecx / jnz` on modern CPUs; prefer explicit branches.
-- For `rep movs*`/`stos*`, some CPUs have specialized microcode for large copies/sets.
+* `XOR reg,reg` sets `ZF=1` iff `reg` was zero, but it **clobbers** the operand; for comparisons, prefer `CMP`/`TEST`.
+* Falling back to `dec ecx / jnz` is typically faster than `LOOP` on modern CPUs.
+
+### Data Moving
+
+```asm
+mov   dest, src     ; register <-> register/memory/immediate
+movsx dest, src     ; sign-extend
+movzx dest, src     ; zero-extend
+```
+
+String forms (implicit operands):
+
+* `MOVSB/MOVSW/MOVSD` move byte/word/dword from `[ESI]` → `[EDI]`, then `ESI += ±size`, `EDI += ±size` based on `DF`.
+* `CMPSB/CMPSW/CMPSD` compare `[ESI]` vs `[EDI]`; `REPE/REPZ` and `REPNE/REPNZ` repeat while equal/unequal.
+
+
+### Loops
+
+Counter-based loop:
+
+```asm
+mov  ecx, 5
+.proc:
+  ; ... body ...
+  dec  ecx
+  jnz  .proc
+```
+
+String/rep example:
+
+```asm
+cld                 ; ensure forward
+mov esi, str1
+mov edi, str2
+mov ecx, 16
+repe cmpsb          ; stop on mismatch or ECX==0
+```
+
+**Notes / tips**
+
+* `LOOP` exists (`ecx-- ; jnz target`) but is usually slower than explicit `dec/jnz`.
+* For big copies/sets, `REP MOVS*`/`STOS*` may use optimized microcode paths.
 
 ### Stack Management
 
-**POP :** pop dest
+```asm
+push r/m32
+pop  r/m32
+```
 
-**PUSH :** push var/reg
+* `PUSHAD/POPAD` push/pop all GPRs (32-bit only; deprecated in 64-bit).
+* `PUSHF/POPF` save/restore `EFLAGS`.
 
-The POP instruction pops a value or memory address (which is also a value) from the stack and stores it in destination and also increments ESP to point to new top of the stack.
-
-PUSH pushes new value on stack and decrements ESP to the point to new top
-
-**Also**
-
-- `PUSHAD/POPAD` push/pop all 32-bit GPRs (deprecated in 64-bit mode, but available in 32-bit).
-- `PUSHF/POPF` save/restore flags.
+Constraints: `push`/`pop` work with regs/mem (no immediates for `pop`; `push imm` is fine).
 
 ### Functions
 
-**CALL :** call _func
+**CALL / RET**
 
-**RET :** RET / RET num
+* `CALL target`: pushes the **return address** (next `EIP`) to the stack, then jumps.
+* Typical callee prologue/epilogue uses `EBP` to anchor the frame (see Stack Frames).
+* `RET` pops the return address into `EIP`. `RET imm16` additionally **adjusts the stack** by `imm16` bytes (callee cleanup).
 
-CALL is like jump with several differences.  A jump instruction loads an address into EIP and continues execution from there. A CALL though stores current EIP On stack, with expectation to reload it once the callee(the called function) is done
-
-When CALL functions occurs following steps occur →
-
-1. EIP is stored on the stack ; this is done by CALL instruction
-2. EBP is stored on the stack 
-3. EBP is made to point to ESP ; an abstraction of calling convention
-4. ESP is decremented to, among several things, contain the local variables of _func
-5. EIP is loaded with the address of _func
-
-When  callee has finished executing, the caller’s EBP is popped back into the EBP. 
-
-Then the RET instruction removes the stack-frame of the callee by incrementing the ESP and pop the old saved EOP into EOP so that execution can continue where it left of.
-
-Returns values are stored in EAX.
+Return values: scalars typically in **`EAX`** (wider returns may use `EDX:EAX`).
 
 ### Interrupts, Debugger Traps
 
-**INT :** int num (num represents the interrupt handler)
+```asm
+int  imm8      ; software interrupt
+int3            ; 0xCC, breakpoint
+```
 
-Interrupts are used to tell the CPU to halt the execution of a thread. They can be hardware based, software based or exception based. 
-When the INT instruction is hit, the execution is moved to an exception handler, which is defined by num.
+* `INT n` vectors through the IDT to a handler.
+* Debuggers set breakpoints by patching an instruction byte to `INT3` (`0xCC`).
+* Single-step uses the **Trap Flag (`TF`)**; after each instruction, a debug exception (#DB) is raised.
 
-When a software breakpoints is a set in debugger, the instruction where breakpoint is supposed to be hit is exchanged by INT3 (0xCC). Then the control is handed to debugger and the trap flag is set and CPU will execute one instruction at a time.
+---
 
 ## Calling Conventions
 
 ### stdcall
 
-In stdcall, function arguments are passed from right to left and the callee is in the charge of cleaning up the stack. Return values are stored in EAX. The stdcall is combination of pascal and cdecl
+* Args pushed **right→left** on the stack.
+* **Callee** cleans the stack (`ret argbytes`).
+* Return in `EAX`.
 
 ### cdecl
 
-The cdecl (short for c declaration) originates from. Main difference between stdcall and cdecl is that the caller is responsible for cleaning up the stack 
+* Args pushed **right→left**.
+* **Caller** cleans the stack (`ret`).
+* Variadic functions require caller cleanup; return in `EAX`.
 
 ### pascal
 
-It originates from pascal programming language. The main difference between stdcall and pascall is that parameters are pushed from left to right.
+* Args pushed **left→right**.
+* Typically callee cleanup; return in `EAX`. (Historic; uncommon today.)
 
 ### fastcall
 
-It is non-standardized calling convention. It is usually recognized through the way it sends function arguments. While all above conventions use the stack to store the function arguments, fastcall loads them into registers.
+* Non-standardized family.
+* On 32-bit Windows `__fastcall`: pass first two args in **`ECX`** and **`EDX`**, rest on stack; callee usually cleans.
+* Other toolchains define different fastcall ABIs; always check your compiler/OS docs.
 
 ### Quick tips
 
-- Endianness: little-endian affects **byte** layout in memory, not bit order inside a byte.
-- Use `CLD` before string ops if you rely on forward direction (some code may have set `DF`).
-- Compare type matters: use `JA/JB` for **unsigned** and `JG/JL` for **signed** after `CMP`.
-- Before `IDIV`, set up `EDX:EAX` correctly: `CDQ` sign-extends `EAX` into `EDX`.
-- Zeroing a register: `XOR reg, reg` or `SUB reg, reg` both set it to 0; `XOR` is preferred (zero-idiom).
+* Endianness: affects **byte layout in memory**, not the order of bits.
+* Use `CLD` before string ops if you require forward progression; some code may have set `DF`.
+* After `CMP`: choose jumps by **unsigned** (`JA/JB/...`) vs **signed** (`JG/JL/...`) intent.
+* Before `IDIV`, prepare `EDX:EAX` correctly: `CDQ` sign-extends `EAX` into `EDX`.
+* Zeroing registers: `xor reg,reg` (zero-idiom) is efficient and breaks dependencies; `sub reg,reg` also works but is less canonical.
+
 
 > References: [Sensepost Blog](https://sensepost.com/blogstatic/2014/01/SensePost_crash_course_in_x86_assembly-.pdf) and [OST2 x86-64 Assembly](https://apps.p.ost2.fyi/learning/course/course-v1:OpenSecurityTraining2+Arch1001_x86-64_Asm+2021_v1/home)
 
