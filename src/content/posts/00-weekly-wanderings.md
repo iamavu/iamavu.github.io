@@ -10,6 +10,9 @@ draft: false
 
 ## what she explored this week
 
+### week 0x13
+- did 15 challs from pwn.college rev section
+
 ### week 0x12
 - completed [hackaday's ghidra course](https://hackaday.io/course/172292-introduction-to-reverse-engineering-with-ghidra)
 
