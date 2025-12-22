@@ -109,7 +109,7 @@ now that you know the basics and fair enough, it’s time to play and gamify you
 thm and htb feels a little overwhelming to me to directly dive into, so i suggest to try out overthewire first and then picoctf, again you will know what they are when you visit their respective websites
 i suggest the order as otw and parallelly picoctf then thm then htb.
 
-once you feel comfortable sprinkle in [ctfs](https://www.youtube.com/watch?v=8ev9zx9j45a) in between from ctftime
+once you feel comfortable sprinkle in [ctfs](https://www.youtube.com/watch?v=8ev9ZX9J45A) in between from ctftime
 
 link: [overthewire](https://overthewire.org/), [tryhackme](https://tryhackme.com/), [hackthebox](https://www.hackthebox.eu/), [picoctf](https://picoctf.org/), [ctftime](https://ctftime.org/)
 
