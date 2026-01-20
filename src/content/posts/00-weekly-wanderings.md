@@ -10,6 +10,9 @@ draft: false
 
 ## what she explored this week
 
+### week 0x14
+- did 2 challs from pwn.college rev section
+
 ### week 0x13
 - did 15 challs from pwn.college rev section
 
