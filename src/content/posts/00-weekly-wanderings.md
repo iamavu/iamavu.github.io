@@ -10,6 +10,10 @@ draft: false
 
 ## what she explored this week
 
+### week 0x15
+- got [ret2.systems's wargame](https://wargames.ret2.systems/)
+- completed chapter 0, 1, 2
+
 ### week 0x14
 - did 2 challs from pwn.college rev section
 
@@ -20,12 +24,10 @@ draft: false
 - completed [hackaday's ghidra course](https://hackaday.io/course/172292-introduction-to-reverse-engineering-with-ghidra)
 
 ### week 0x11
-
 - completed C course
 - wrote the blog post for making my first crackme -- [medusa](https://iamavu.com/posts/05-making-medusa-my-first-crackme-part-0x01/)
 
 ### week 0x10
-
 - started orange belt of [pwn.college](https://pwn.college)
 - completed 25 challenges from the same
 
