@@ -10,6 +10,10 @@ draft: false
 
 ## what she explored this week
 
+### week 0x16
+- completed all lectures of memory corruption and 2 levels of the same
+- 2 lectures of shellcoding
+
 ### week 0x15
 - got [ret2.systems's wargame](https://wargames.ret2.systems/)
 - completed chapter 0, 1, 2
