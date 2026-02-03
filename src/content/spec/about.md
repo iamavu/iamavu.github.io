@@ -2,25 +2,24 @@ This is Avantika, a curious girl who adores everything and anything computer sec
 
 You can reach out to her at breakpoint@iamavu.com
 
-People who supported my wanderings ->
+People who supported my wanderings:
 
-[Somdev](https://x.com/s0md3v)
-[Lohitya](https://x.com/thewhiteh4t)
-[Starry](https://x.com/starryl0rd)
-[Legend](https://x.com/mlwrlgnd)
-[Nigam](https://x.com/nigamelastic)
-[Snipesec](https://x.com/0xSN1PE)
-[CVEWhen](https://x.com/cvewhen)
-[Neswin](https://x.com/grit8086)
-[Dev](https://x.com/DEVastating_wit)
-[Weird Raven](https://x.com/sadocadonon)
-[Ethereal](https://x.com/ethereal__vx)
+[Somdev](https://x.com/s0md3v)<br>
+[Lohitya](https://x.com/thewhiteh4t)<br>
+[Starry](https://x.com/starryl0rd)<br>
+[Legend](https://x.com/mlwrlgnd)<br>
+[Nigam](https://x.com/nigamelastic)<br>
+[Snipesec](https://x.com/0xSN1PE)<br>
+[CVEWhen](https://x.com/cvewhen)<br>
+[Neswin](https://x.com/grit8086)<br>
+[Dev](https://x.com/DEVastating_wit)<br>
+[Weird Raven](https://x.com/sadocadonon)<br>
+[Ethereal](https://x.com/ethereal__vx)<br>
 [Kunal](https://kunull.net/)
-[Roddux](https://x.com/roddux)
-[Richard](https://x.com/richinseattle)
-[Aditya](https://x.com/aditya12anand)
-[mr.rc](https://x.com/rcx86)
-[Bhargav](https://x.com/s01u5)
-[Jinx](https://x.com/J1NNX26)
-[DoctorWho](https://x.com/Jiab77)
-[Kartikey](https://x.com/chronocruz_exe)
+[Roddux](https://x.com/roddux)<br>
+[Aditya](https://x.com/aditya12anand)<br>
+[Mr.rc](https://x.com/rcx86)<br>
+[Bhargav](https://x.com/s01u5)<br>
+[Jinx](https://x.com/J1NNX26)<br>
+[DoctorWho](https://x.com/Jiab77)<br>
+[Kartikey](https://x.com/chronocruz_exe)<br>
