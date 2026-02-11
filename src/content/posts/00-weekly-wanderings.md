@@ -9,6 +9,8 @@ draft: false
 ---
 
 ## what she explored this week
+### week 0x17
+- completed all shellcoding lectures and 2 levels of the same
 
 ### week 0x16
 - completed all lectures of memory corruption and 2 levels of the same

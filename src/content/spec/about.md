@@ -15,7 +15,7 @@ People who supported my wanderings:
 [Dev](https://x.com/DEVastating_wit)<br>
 [Weird Raven](https://x.com/sadocadonon)<br>
 [Ethereal](https://x.com/ethereal__vx)<br>
-[Kunal](https://kunull.net/)
+[Kunal](https://kunull.net/)<br>
 [Roddux](https://x.com/roddux)<br>
 [Aditya](https://x.com/aditya12anand)<br>
 [Mr.rc](https://x.com/rcx86)<br>
